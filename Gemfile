@@ -33,9 +33,10 @@ group :test, :development do
   gem "rspec-rails", "~> 2.6"
   gem 'mysql2'
   gem 'turn', :require => false
-  gem 'ruby-debug19', :require => 'ruby-debug'
+  #gem 'ruby-debug19', :require => 'ruby-debug'
   gem 'capybara'
   gem 'fixture_builder'
   gem 'spork', '~> 0.9.0.rc'
   gem 'foreman'
+  gem 'letter_opener'
 end

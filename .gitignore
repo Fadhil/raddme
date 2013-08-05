@@ -2,8 +2,10 @@
 .idea/*
 .rvmrc
 config/database.yml
+custom_plan.rb
 db/*.sqlite3
 log/*.log
 spec/fixtures/*.yml
 spec/javascripts/fixtures/*
 tmp/
+zeus.json
