@@ -1,0 +1,5 @@
+= form_for 'import',  :url=>{:controller=>"users", :action=>"generate_users"}, :html => { :multipart => true } do |f|
+  = f.label 'Select a CSV file'
+  = f.file_field :file
+  %span.medium.pretty.btn.primary
+    = f.submit 'Import Users'

@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, except: [:show]
+  before_filter :authenticate_user!, except: [:show, :import, :generate_users]
   before_filter :get_user, only: [:show]
+  before_filter :http_authenticate, only: [:import]
 
   def show
   end
@@ -23,5 +24,19 @@ class UsersController < ApplicationController
     rescue
       redirect_to root_path, alert: "Sorry, can't find that user"
     end
+  end
+
+  def http_authenticate
+    authenticate_or_request_with_http_basic do |username, password|
+      username == "big" && password == "boss"
+    end
+  end
+  
+  def import
+
+  end
+
+  def generate_users
+    
   end
 end
