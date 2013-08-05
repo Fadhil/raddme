@@ -14,7 +14,7 @@ class FriendshipsController < ApplicationController
   end
 
   def create_from_tokens
-    unique_friend_tokens = params[:user][:unique_tokens].split(',').to_a
+    unique_friend_tokens = params[:reply_plain].split(',').to_a
     friends = User.where('unique_friend_token in (?)', unique_friend_tokens)
 
     friends.each do |friend|
