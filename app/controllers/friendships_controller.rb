@@ -1,5 +1,6 @@
 class FriendshipsController < ApplicationController
-  before_filter :get_user, only: [:create, :create_from_tokens]
+  before_filter :get_user, only: [:create]
+  before_filter :get_user_by_email_add, only: [:create_from_tokens]
   before_filter :get_friend, only: [:create]
   rescue_from ActiveRecord::RecordInvalid, with: :email_not_valid
   def create
@@ -33,6 +34,12 @@ class FriendshipsController < ApplicationController
     @user = User.find_by_id(params[:user][:id])
     raise ActiveRecord::RecordNotFound unless @user
   end
+
+  def get_user_by_email_add
+    @user = User.find_by_email(params[:headers]['From'])
+    raise ActiveRecord::RecordNotFound unless @user
+  end
+
 
   def get_friend
     @friend = User.find_by_email(params[:user][:email])
