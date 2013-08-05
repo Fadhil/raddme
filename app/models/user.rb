@@ -137,7 +137,6 @@ class User < ActiveRecord::Base
 
   def self.create_imported_user(row)
     password = SecureRandom.hex(4)
-    unique_friend_token = generate_unique_friend_token
     user = find_or_create_by_email(email: row[0], 
                                     fullname: row[1], 
                                     title: row[2], 
@@ -147,15 +146,20 @@ class User < ActiveRecord::Base
                                     phone_fax: row[6],
                                     url: row[1].downcase.gsub(/\W/,'_'),
                                     password: password,
-                                    password_confirmation: password)
-
-
-    generate_unique_friend_token
+                                    password_confirmation: password,
+                                    unique_friend_token: generate_unique_friend_token)
+    
     user.save
   end
 
   def self.generate_unique_friend_token
-  
+    random_number = (0..5 - 1).map{ rand(0..9)}.join
+
+    while find_by_unique_friend_token(random_number) != nil
+      random_number = (0..5 - 1).map{ rand(0..9)}.join
+      Rails.logger.info "generating tokens\n"
+    end
+    random_number
   end
 
 end
