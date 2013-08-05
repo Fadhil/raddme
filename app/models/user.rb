@@ -48,6 +48,17 @@ class User < ActiveRecord::Base
     end
   end
 
+  def notify_friend(friend)
+    if friend.registered?
+      UserMailer.exchanged(self, friend).deliver
+      UserMailer.exchanged(friend, self).deliver
+      notice = "You've successfully exchanged contact"
+    else
+      UserMailer.exchanged_unregistered(self, friend).deliver
+      notice = "You've shared contact with #{friend.email}. As soon as they login, you will receive their card"
+    end
+  end
+
   def update_with_password(params={})
     params.delete(:current_password)
     self.update_without_password(params)

@@ -1,16 +1,25 @@
 class FriendshipsController < ApplicationController
-  before_filter :get_user, only: [:create]
+  before_filter :get_user, only: [:create, :create_from_tokens]
   before_filter :get_friend, only: [:create]
   rescue_from ActiveRecord::RecordInvalid, with: :email_not_valid
   def create
     @user.add_friend(@friend)
-    if @friend.registered?
-      UserMailer.exchanged(@user, @friend).deliver
-      UserMailer.exchanged(@friend, @user).deliver
-      notice = "You've successfully exchanged contact"
+    @user.notify_friend(@friend)
+
+    if request.xhr?
+      head :ok
     else
-      UserMailer.exchanged_unregistered(@user, @friend).deliver
-      notice = "You've shared contact with #{@friend.email}. As soon as they login, you will receive their card"
+      redirect_to public_user_path(@user), notice: notice
+    end
+  end
+
+  def create_from_tokens
+    unique_friend_tokens = params[:user][:unique_tokens].split(',').to_a
+    friends = User.where('unique_friend_token in (?)', unique_friend_tokens)
+
+    friends.each do |friend|
+      @user.add_friend(friend)
+      @user.notify_friend(friend)
     end
 
     if request.xhr?
