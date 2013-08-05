@@ -166,10 +166,10 @@ class User < ActiveRecord::Base
   end
 
   def self.generate_unique_friend_token
-    random_number = (0..5).map{ rand(10)}.join
+    random_number = (0..4).map{ rand(10)}.join
 
     while find_by_unique_friend_token(random_number) != nil
-      random_number = (0..5).map{ rand(10)}.join
+      random_number = (0..4).map{ rand(10)}.join
       Rails.logger.info "generating token\n"
     end
     random_number
