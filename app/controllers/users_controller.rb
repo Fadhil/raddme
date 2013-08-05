@@ -37,6 +37,20 @@ class UsersController < ApplicationController
   end
 
   def generate_users
-    
+
+    if params[:import].present?
+      file = params[:import][:file]
+      data = file.read
+      extension = file.content_type
+    end
+
+    unless extension == 'text/csv'
+      redirect_to import_path, notice: 'You must upload a CSV file.'
+    else
+      status = User.parse_user_data(data)
+      redirect_to import_path, notice: status
+    end
+
   end
+
 end

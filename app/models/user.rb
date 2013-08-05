@@ -108,6 +108,24 @@ class User < ActiveRecord::Base
     vcf
   end
 
+  def self.parse_user_data(data)
+    @parsed_file=CSV.parse(data)
+    user_success_count = 0
+    user_fail_count = 0
+    @parsed_file.each  do |row|
+      unless row[0] == 'Email' || row[0].blank?
+
+        if create_imported_user(row)
+          user_success_count += 1
+        else
+          user_fail_count += 1
+        end
+      end
+    end
+
+    "Successfully imported #{user_success_count} users. #{user_fail_count} users failed to be imported"
+  end
+
   def self.find_by_email(mail)
     super(mail.downcase)
   end
@@ -116,4 +134,28 @@ class User < ActiveRecord::Base
   def downcase_email
     self.email.downcase! if self.email
   end
+
+  def self.create_imported_user(row)
+    password = SecureRandom.hex(4)
+    unique_friend_token = generate_unique_friend_token
+    user = find_or_create_by_email(email: row[0], 
+                                    fullname: row[1], 
+                                    title: row[2], 
+                                    organization: row[3], 
+                                    phone_mobile: row[4], 
+                                    phone_work: row[5],
+                                    phone_fax: row[6],
+                                    url: row[1].downcase.gsub(/\W/,'_'),
+                                    password: password,
+                                    password_confirmation: password)
+
+
+    generate_unique_friend_token
+    user.save
+  end
+
+  def self.generate_unique_friend_token
+  
+  end
+
 end
