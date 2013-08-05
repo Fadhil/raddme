@@ -36,6 +36,7 @@ class FriendshipsController < ApplicationController
   end
 
   def get_user_by_email_add
+    Rails.logger.info "Cloudmailin sender email: #{params[:headers]['From']}"
     @user = User.find_by_email(params[:headers]['From'])
     raise ActiveRecord::RecordNotFound unless @user
   end
