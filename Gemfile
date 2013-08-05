@@ -27,6 +27,7 @@ gem 'jquery-rails'
 group :development do
   gem 'tap'
   gem 'heroku'
+  gem 'letter_opener'
 end
 
 group :test, :development do
@@ -38,5 +39,4 @@ group :test, :development do
   gem 'fixture_builder'
   gem 'spork', '~> 0.9.0.rc'
   gem 'foreman'
-  gem 'letter_opener'
 end

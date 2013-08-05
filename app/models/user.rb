@@ -114,9 +114,11 @@ class User < ActiveRecord::Base
     user_fail_count = 0
     @parsed_file.each  do |row|
       unless row[0] == 'Email' || row[0].blank?
-
-        if create_imported_user(row)
+        password = SecureRandom.hex(4)
+        user = create_imported_user(row,password)
+        if user.save
           user_success_count += 1
+          UserMailer.welcome_new_user(user, password).deliver
         else
           user_fail_count += 1
         end
@@ -135,8 +137,8 @@ class User < ActiveRecord::Base
     self.email.downcase! if self.email
   end
 
-  def self.create_imported_user(row)
-    password = SecureRandom.hex(4)
+  def self.create_imported_user(row,password)
+    
     user = find_or_create_by_email(email: row[0], 
                                     fullname: row[1], 
                                     title: row[2], 
@@ -149,7 +151,7 @@ class User < ActiveRecord::Base
                                     password_confirmation: password,
                                     unique_friend_token: generate_unique_friend_token)
     
-    user.save
+    user
   end
 
   def self.generate_unique_friend_token
@@ -157,7 +159,7 @@ class User < ActiveRecord::Base
 
     while find_by_unique_friend_token(random_number) != nil
       random_number = (0..5 - 1).map{ rand(0..9)}.join
-      Rails.logger.info "generating tokens\n"
+      Rails.logger.info "generating token\n"
     end
     random_number
   end
