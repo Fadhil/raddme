@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   after_create { |user| user.create_friendship }
   scope :unregistered, where("invite_token IS NOT NULL")
   scope :registered, where(invite_token: nil)
+  scope :todays_imports, lambda{ where('unique_friend_token IS NOT NULL AND created_at >= ?', Date.today)}
 
   def friends
     User.where(id: friend_ids)
@@ -57,6 +58,11 @@ class User < ActiveRecord::Base
       UserMailer.exchanged_unregistered(self, friend).deliver
       notice = "You've shared contact with #{friend.email}. As soon as they login, you will receive their card"
     end
+  end
+
+  def shorter_notify_friend(friend)
+    UserMailer.ex_short(self, friend).deliver
+    UserMailer.ex_short(friend, self).deliver
   end
 
   def update_with_password(params={})

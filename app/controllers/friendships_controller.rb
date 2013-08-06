@@ -22,14 +22,9 @@ class FriendshipsController < ApplicationController
     Rails.logger.info "The Friends: #{friends}\n"
     friends.each do |friend|
       @user.add_friend(friend)
-      @user.notify_friend(friend)
+      @user.shorter_notify_friend(friend)
     end
 
-    if request.xhr?
-      head :ok
-    else
-      redirect_to public_user_path(@user), notice: notice
-    end
   end
 
   def get_user

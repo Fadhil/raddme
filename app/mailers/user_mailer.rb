@@ -1,11 +1,15 @@
 class UserMailer < ActionMailer::Base
-  default from: "just@radd.me"
-
+  #default from: "just@radd.me"
+  default from: "61fbf40635579fddfe89@cloudmailin.net"
   def exchanged_unregistered(user, friend)
     setup_mail(user, friend)
   end
 
   def exchanged(user, friend)
+    setup_mail(user, friend)
+  end
+
+  def ex_short(user, friend)
     setup_mail(user, friend)
   end
 

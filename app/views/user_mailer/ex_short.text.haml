@@ -1,0 +1,9 @@
+= "Hi #{@friend.fullname}"
+= nil
+It was nice to meet you here are my contact details:
+= nil
+= render partial: "details", locals: {user: @user}
+= nil
+Regards,
+= @user.fullname
+= public_user_url(@user)

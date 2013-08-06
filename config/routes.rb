@@ -11,6 +11,7 @@ Radd::Application.routes.draw do
 
   match 'about' => 'home#about', as: :about
   get 'import' => 'users#import'
+  get 'imported' => 'users#show_imports'
   post 'generate_users' => 'users#generate_users'
   match 'raddme.appcache' => 'offline#show'
   root :to => "home#index"
