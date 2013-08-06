@@ -36,7 +36,6 @@ class FriendshipsController < ApplicationController
   end
 
   def get_user_by_email_add
-    Rails.logger.info "Cloudmailin sender email: #{params[:headers]['From']}"
     email = extract_email(params[:headers]['From'])
  
     @user = User.find_by_email(email)
@@ -48,6 +47,7 @@ class FriendshipsController < ApplicationController
     clean_email_start = full_email_add.index("<") + 1
     clean_email_end = full_email_add.index(">") - 1
     clean_email = full_email_add[clean_email_start..clean_email_end]
+    Rails.logger.info clean_email
     clean_email
   end
 
