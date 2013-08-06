@@ -46,6 +46,10 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+tr, th, td {
+  margin: 30px;
+  padding: 0 20px 20px 0;
+}
 
 /* #CSS3 Buttons
 ================================================== */

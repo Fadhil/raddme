@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, except: [:show, :import, :generate_users]
+  before_filter :authenticate_user!, except: [:show, :import, :generate_users, :show_imports]
   before_filter :get_user, only: [:show]
+  before_filter :get_todays_imports, only: [:show_imports]
   before_filter :http_authenticate, only: [:import]
 
   def show
@@ -36,6 +37,14 @@ class UsersController < ApplicationController
 
   end
 
+  def show_imports
+
+  end
+
+  def get_todays_imports
+    @users = User.todays_imports
+  end
+
   def generate_users
 
     if params[:import].present?
@@ -48,7 +57,7 @@ class UsersController < ApplicationController
       redirect_to import_path, notice: 'You must upload a CSV file.'
     else
       status = User.parse_user_data(data)
-      redirect_to import_path, notice: status
+      redirect_to imported_path, notice: status
     end
 
   end
