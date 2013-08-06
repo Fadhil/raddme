@@ -1,4 +1,5 @@
 class FriendshipsController < ApplicationController
+  skip_before_filter :verify_authenticity_token, only: [:create_from_tokens]
   before_filter :get_user, only: [:create]
   before_filter :get_user_by_email_add, only: [:create_from_tokens]
   before_filter :get_friend, only: [:create]
