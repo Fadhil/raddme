@@ -19,12 +19,15 @@ class FriendshipsController < ApplicationController
     unique_friend_tokens = params[:reply_plain].split(',').to_a
     friends = User.where('unique_friend_token in (?)', unique_friend_tokens)
     Rails.logger.info "The user: #{@user}\n"
-    Rails.logger.info "The Friends: #{friends}\n"
+    Rails.logger.info "The friends: \n"
     friends.each do |friend|
       @user.add_friend(friend)
       @user.shorter_notify_friend(friend)
+      Rails.logger.info "#{friend}\n"
     end
-
+    respond_to do |format|
+      format.html { render text: "Booyakasha"}
+    end
   end
 
   def get_user
