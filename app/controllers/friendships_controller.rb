@@ -39,6 +39,7 @@ class FriendshipsController < ApplicationController
     email = extract_email(params[:headers]['From'])
  
     @user = User.find_by_email(email)
+    Rails.logger.info "User found with email #{email}: #{@user}"
     raise ActiveRecord::RecordNotFound unless @user
   end
 
