@@ -16,9 +16,9 @@ class FriendshipsController < ApplicationController
   end
 
   def create_from_tokens
-    unique_friend_tokens = params[:reply_plain].gsub(/\s+/, "").split(',').to_a
+    unique_friend_tokens = params[:plain].gsub(/\s+/, "").split(',').to_a
     friends = User.where('unique_friend_token in (?)', unique_friend_tokens)
-    Rails.logger.info "The reply: #{params[:reply_plain]}\n"
+    Rails.logger.info "The reply: #{params[:plain]}\n"
     Rails.logger.info "Friend Tokens: #{unique_friend_tokens}\n"
     Rails.logger.info "The user: #{@user}\n"
     Rails.logger.info "The friends: #{friends}\n"

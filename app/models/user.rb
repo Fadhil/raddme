@@ -61,6 +61,7 @@ class User < ActiveRecord::Base
   end
 
   def shorter_notify_friend(friend)
+    Rails.logger.info "Sending short friend notification\n"
     UserMailer.ex_short(self, friend).deliver
     UserMailer.ex_short(friend, self).deliver
   end
