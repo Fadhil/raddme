@@ -1,3 +1,9 @@
+GIT
+  remote: git@github.com:aceofsales/vpim.git
+  revision: 60503889142f3109538645649084ea94395ec8ac
+  specs:
+    vpim (0.7.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -178,7 +184,6 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    vpim (0.695)
     warden (1.2.3)
       rack (>= 1.0)
     xpath (2.0.0)
@@ -210,4 +215,4 @@ DEPENDENCIES
   turn
   uglifier (>= 1.0.3)
   unicorn
-  vpim
+  vpim!
