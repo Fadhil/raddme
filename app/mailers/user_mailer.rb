@@ -10,7 +10,7 @@ class UserMailer < ActionMailer::Base
   end
 
   def ex_short(user, friend)
-    logger.info "Sending email from #{user} to #{friend}\n"
+    Rails.logger.info "Sending email from #{user} to #{friend}\n"
     setup_mail(user, friend)
   end
 
