@@ -17,6 +17,9 @@ class FriendshipsController < ApplicationController
 
   def create_from_tokens
     unique_friend_tokens = params[:plain].gsub(/\s+/, "").split(',').to_a
+    last_item_index = unique_friend_tokens.size - 1
+    #the last item includes all the other crap - signatures, whatever, so we only take the first 5 chars of that item
+    unique_friend_tokens[last_item_index] = unique_friend_tokens[last_item_index][0,5]
     friends = User.where('unique_friend_token in (?)', unique_friend_tokens)
     Rails.logger.info "The reply: #{params[:plain]}\n"
     Rails.logger.info "Friend Tokens: #{unique_friend_tokens}\n"
