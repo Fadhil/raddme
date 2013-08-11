@@ -6,7 +6,7 @@ gem 'rails', '3.1.10'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-gem 'vpim'
+gem 'vpim', git: 'git@github.com:aceofsales/vpim.git'
 gem 'devise'
 gem 'unicorn'
 gem 'haml'
