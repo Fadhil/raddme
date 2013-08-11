@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:aceofsales/vpim.git
+  remote: https://github.com/aceofsales/vpim.git
   revision: 60503889142f3109538645649084ea94395ec8ac
   specs:
     vpim (0.7.0)
