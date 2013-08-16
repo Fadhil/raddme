@@ -2,6 +2,7 @@ class FriendshipsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:create_from_tokens]
   before_filter :get_user, only: [:create]
   before_filter :get_user_by_email_add, only: [:create_from_tokens]
+  before_filter :get_user_by_mobile_no, only: [:create_from_sms]
   before_filter :get_friend, only: [:create]
   rescue_from ActiveRecord::RecordInvalid, with: :email_not_valid
   def create
@@ -36,25 +37,30 @@ class FriendshipsController < ApplicationController
   end
 
   def create_from_sms
-    unique_friend_tokens = params[:message]#.gsub('%20','').gsub('%2E','').gsub(/\s+/, "").split(',').to_a
+    unique_friend_tokens = params[:message]
+    if unique_friend_tokens
+      unique_friend_tokens = params[:message].gsub('%20','').gsub('%2E','').gsub(/\s+/, "").split(',').to_a
+    end
     message_id = params[:mesg_id]
     mobile_no = params[:mobile_no]
     resp_code = 'ok'
-    # last_item_index = unique_friend_tokens.size - 1
-    # #the last item includes all the other crap - signatures, whatever, so we only take the first 5 chars of that item
-    # unique_friend_tokens[last_item_index] = unique_friend_tokens[last_item_index][0,5]
-    # friends = User.where('unique_friend_token in (?)', unique_friend_tokens)
-    # Rails.logger.info "The reply: #{params[:plain]}\n"
-    # Rails.logger.info "Friend Tokens: #{unique_friend_tokens}\n"
-    # Rails.logger.info "The user: #{@user.email}\n"
-    # Rails.logger.info "The friends: #{friends.email}\n"
-    # friends.each do |friend|
-    #   @user.add_friend(friend)
-    #   @user.shorter_notify_friend(friend)
-    #   Rails.logger.info "#{friend.email}\n"
-    # end
+    unless unique_friend_tokens.blank? || mobile_no.blank?
+      last_item_index = unique_friend_tokens.size - 1
+      #the last item includes all the other crap - signatures, whatever, so we only take the first 5 chars of that item
+      unique_friend_tokens[last_item_index] = unique_friend_tokens[last_item_index][0,5]
+      friends = User.where('unique_friend_token in (?)', unique_friend_tokens)
+      Rails.logger.info "The reply: #{params[:plain]}\n"
+      Rails.logger.info "Friend Tokens: #{unique_friend_tokens}\n"
+      Rails.logger.info "The user: #{@user.email}\n"
+      Rails.logger.info "The friends: #{friends.email}\n"
+      friends.each do |friend|
+        @user.add_friend(friend)
+        @user.shorter_notify_friend(friend)
+        Rails.logger.info "#{friend.email}\n"
+      end
+    end
     respond_to do |format|
-      format.html { head :ok, resp_code: resp_code, mesg_id: message_id, cpid: 333}
+      format.html { head :ok, resp_code: resp_code, mesg_id: message_id, cpid: 312}
     end
   end
   def get_user
@@ -70,6 +76,12 @@ class FriendshipsController < ApplicationController
     raise ActiveRecord::RecordNotFound unless @user
   end
 
+  def get_user_by_mobile_no
+    mobile_no = params[:mobile_no].gsub(/\s+/,'')
+    @user = User.where('phone_mobile = ?',mobile_no).first
+    Rails.logger.info "User found with mobile_no #{mobile_no}: #{@user}"
+    raise ActiveRecord::RecordNotFound unless @user
+  end
 
   def extract_email(full_email_add)
     clean_email_start = full_email_add.index("<") + 1
