@@ -35,6 +35,28 @@ class FriendshipsController < ApplicationController
     end
   end
 
+  def create_from_sms
+    unique_friend_tokens = params[:message]#.gsub('%20','').gsub('%2E','').gsub(/\s+/, "").split(',').to_a
+    message_id = params[:mesg_id]
+    mobile_no = params[:mobile_no]
+    resp_code = 'ok'
+    # last_item_index = unique_friend_tokens.size - 1
+    # #the last item includes all the other crap - signatures, whatever, so we only take the first 5 chars of that item
+    # unique_friend_tokens[last_item_index] = unique_friend_tokens[last_item_index][0,5]
+    # friends = User.where('unique_friend_token in (?)', unique_friend_tokens)
+    # Rails.logger.info "The reply: #{params[:plain]}\n"
+    # Rails.logger.info "Friend Tokens: #{unique_friend_tokens}\n"
+    # Rails.logger.info "The user: #{@user.email}\n"
+    # Rails.logger.info "The friends: #{friends.email}\n"
+    # friends.each do |friend|
+    #   @user.add_friend(friend)
+    #   @user.shorter_notify_friend(friend)
+    #   Rails.logger.info "#{friend.email}\n"
+    # end
+    respond_to do |format|
+      format.html { head :ok, resp_code: resp_code, mesg_id: message_id, cpid: 333}
+    end
+  end
   def get_user
     @user = User.find_by_id(params[:user][:id])
     raise ActiveRecord::RecordNotFound unless @user
