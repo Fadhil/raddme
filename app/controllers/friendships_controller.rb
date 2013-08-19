@@ -58,7 +58,8 @@ class FriendshipsController < ApplicationController
     #   end
     # end
     respond_to do |format|
-      format.html { render 'test' }
+      response.headers["Content-length"]='41'
+      format.html { render 'test'}
     end
   end
   def get_user
