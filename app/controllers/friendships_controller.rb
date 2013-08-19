@@ -77,13 +77,11 @@ class FriendshipsController < ApplicationController
   end
 
   def get_user_by_mobile_no
-    Rails.logger.info "The params: #{params.inspect}"
     mobile_no = params[:MOBILE_NO]
     if mobile_no
       mobile_no = mobile_no.gsub(/\s+/,'')
     end
     @user = User.where('phone_mobile = ?',mobile_no).first
-    Rails.logger.info "User found with mobile_no #{mobile_no}: #{@user}"
     #raise ActiveRecord::RecordNotFound unless @user
   end
 
