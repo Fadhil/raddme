@@ -40,7 +40,7 @@ class FriendshipsController < ApplicationController
   def create_from_sms
     unique_friend_tokens = params[:MESSAGE]
     if unique_friend_tokens
-      unique_friend_tokens = params[:MESSAGE].gsub('%20','').gsub('%2E','').gsub(/\s+/, "").split(',').to_a
+      unique_friend_tokens = params[:MESSAGE].gsub('wmn','').gsub('%20','').gsub('%2E','').gsub(/\s+/, "").split(',').to_a
     end
     @message_id = params[:MESG_ID]
     @mobile_no = params[:MOBILE_NO]
