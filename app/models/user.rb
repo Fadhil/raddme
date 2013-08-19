@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   after_create { |user| user.create_friendship }
   scope :unregistered, where("invite_token IS NOT NULL")
   scope :registered, where(invite_token: nil)
-  scope :todays_imports, lambda{ where('unique_friend_token IS NOT NULL')}
+  scope :todays_imports, lambda{ where('unique_friend_token IS NOT NULL').order(:created_at)}
 
   def friends
     User.where(id: friend_ids)
