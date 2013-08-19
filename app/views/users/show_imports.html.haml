@@ -2,13 +2,17 @@
   %table
     %tr
       %th
+        No.
+      %th
         Name
       %th
         Email
       %th
         Unique ID
-    - @users.each do |user|
+    - @users.each_with_index do |user,index|
       %tr
+        %td
+          = index + 1
         %td
           = user.fullname
         %td
