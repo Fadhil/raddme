@@ -60,7 +60,7 @@ class FriendshipsController < ApplicationController
       end
     end
     respond_to do |format|
-      format.html { render text: "CPID=312&MESG_ID=#{@message_id}&RESP_CODE=OK", status: 200 }
+      format.html { render 'test' }
     end
   end
   def get_user
