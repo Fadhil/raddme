@@ -45,23 +45,22 @@ class FriendshipsController < ApplicationController
     @message_id = params[:MESG_ID]
     @mobile_no = params[:MOBILE_NO]
     @resp_code = 'ok'
-    # unless unique_friend_tokens.blank? || @mobile_no.blank?
-    #   last_item_index = unique_friend_tokens.size - 1
-    #   #the last item includes all the other crap - signatures, whatever, so we only take the first 5 chars of that item
-    #   unique_friend_tokens[last_item_index] = unique_friend_tokens[last_item_index][0,5]
-    #   friends = User.where('unique_friend_token in (?)', unique_friend_tokens)
-    #   Rails.logger.info "The reply: #{params[:plain]}\n"
-    #   Rails.logger.info "Friend Tokens: #{unique_friend_tokens}\n"
-    #   Rails.logger.info "The user: #{@user.email}\n"
-    #   Rails.logger.info "The friends: #{friends.email}\n"
-    #   friends.each do |friend|
-    #     unless friend.nil?
-    #       @user.add_friend(friend)
-    #       @user.shorter_notify_friend(friend)
-    #       Rails.logger.info "#{friend.email}\n"
-    #     end
-    #   end
-    # end
+    unless unique_friend_tokens.blank? || @mobile_no.blank?
+      last_item_index = unique_friend_tokens.size - 1
+      #the last item includes all the other crap - signatures, whatever, so we only take the first 5 chars of that item
+      unique_friend_tokens[last_item_index] = unique_friend_tokens[last_item_index][0,5]
+      friends = User.where('unique_friend_token in (?)', unique_friend_tokens)
+      Rails.logger.info "The reply: #{params[:plain]}\n"
+      Rails.logger.info "Friend Tokens: #{unique_friend_tokens}\n"
+      Rails.logger.info "The user: #{@user.email}\n"
+      friends.each do |friend|
+        unless friend.nil?
+          @user.add_friend(friend)
+          @user.shorter_notify_friend(friend)
+          Rails.logger.info "#{friend.email}\n"
+        end
+      end
+    end
     respond_to do |format|
       format.html { render text: "CPID=312&MESG_ID=#{@message_id}&RESP_CODE=OK", status: 200 }
     end
