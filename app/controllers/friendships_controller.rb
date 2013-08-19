@@ -58,7 +58,7 @@ class FriendshipsController < ApplicationController
       end
     end
     respond_to do |format|
-      response.headers["Content-length"]='55'
+      response.headers["Content-length"]="CPID=312&MESG_ID=#{@message_id}&RESP_CODE=OK".size.to_s
       format.html { render 'test'}
     end
   end
