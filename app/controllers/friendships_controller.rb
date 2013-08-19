@@ -55,9 +55,11 @@ class FriendshipsController < ApplicationController
       Rails.logger.info "The user: #{@user.email}\n"
       Rails.logger.info "The friends: #{friends.email}\n"
       friends.each do |friend|
-        @user.add_friend(friend)
-        @user.shorter_notify_friend(friend)
-        Rails.logger.info "#{friend.email}\n"
+        unless friend.nil?
+          @user.add_friend(friend)
+          @user.shorter_notify_friend(friend)
+          Rails.logger.info "#{friend.email}\n"
+        end
       end
     end
     respond_to do |format|
